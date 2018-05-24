@@ -15,4 +15,6 @@ void clearFile(char *);
 
 int getRandom(int);
 
+sem_t * getSemaphore(char *);
+
 #endif /* FUNCIONES */

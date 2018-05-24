@@ -13,10 +13,11 @@ void * readLine(void * param){
 	
 	Args * args = param;
 
-	//sem_t * sem_log = sem_open(SEM_LOG,0);
-
-	sem_t sem_log;
-	sem_init(&sem_log, 0, 1);
+	sem_t * sem_log = getSemaphore(SEM_LOG);
+	sem_t * sem_block = getSemaphore(SEM_BLOCK);
+	sem_t * sem_sleep = getSemaphore(SEM_SLEEP);
+	sem_t * sem_run = getSemaphore(SEM_RUN);
+	sem_t * sem_memoria = getSemaphore(SEM_MEM);
 	
 	int key = ftok(FILEKEY, KEY);
 	if(key == -1){
@@ -39,12 +40,26 @@ void * readLine(void * param){
 	}
 	
 	int indexLine = 0;
-	
-	printMemoryLines(buffer, args->memory);
-	
     int cont = 0;
 
 	while (cont != 2){
+
+		sem_post(sem_block);
+		//agregar
+		sem_wait(sem_block);
+
+		sem_post(sem_memoria);
+
+		printMemoryLines(buffer, args->memory);
+
+		sem_post(sem_block);
+		//eliminar
+		sem_wait(sem_block);
+
+		sem_post(sem_run);
+		//agregar
+		sem_wait(sem_run);
+
 		printf("Index Linea %d\n",indexLine);
 		indexLine = getNextLine(buffer, args->memory);
 		printf("Index Linea %d\n",indexLine);
@@ -81,10 +96,10 @@ void * readLine(void * param){
 
 			printf("Holi\n");
 
-			sem_post(&sem_log);
+			sem_post(sem_log);
 			printf("WAIT\n");
 			writeLog(args->PID, 2, msg, fecha);
-   			sem_wait(&sem_log);
+   			sem_wait(sem_log);
 			
 			printf("Sleep: %d\n",args->tAccion);
 			//sleep(2);
@@ -94,6 +109,16 @@ void * readLine(void * param){
 		}
 
 		printf("Index Linea %d\n",indexLine);
+
+		sem_post(sem_run);
+		//eliminar
+		sem_wait(sem_run);
+
+		sem_post(sem_sleep);
+		//agregar
+		sem_wait(sem_sleep);
+
+		sem_wait(sem_memoria);
 		
 	}
 	printf("AAAAAAAAAH\n");

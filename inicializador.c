@@ -35,6 +35,10 @@ void inicializarMemoria(int memory){
 
 void createSemaphores(){
 	sem_open(SEM_LOG, O_CREAT | O_EXCL, 0644, 1);
+	sem_open(SEM_BLOCK, O_CREAT | O_EXCL, 0644, 1);
+	sem_open(SEM_SLEEP, O_CREAT | O_EXCL, 0644, 1);
+	sem_open(SEM_RUN, O_CREAT | O_EXCL, 0644, 1);
+	sem_open(SEM_MEM, O_CREAT | O_EXCL, 0644, 1);
 }
 
 int main(int argc, char * argv []) {
@@ -51,6 +55,9 @@ int main(int argc, char * argv []) {
 		inicializarMemoria(memory);
 		createSemaphores();
 		clearFile(FILELOG);
+		clearFile(FILEBLOCK);
+		clearFile(FILESLEEP;
+		clearFile(FILERUN);
 	}
 	
 	return 0;
