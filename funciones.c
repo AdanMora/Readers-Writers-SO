@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <semaphore.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 #include "funciones.h"
 
@@ -17,7 +18,14 @@
 #define KEY 1300
 #define FILESIZE "size.txt"
 #define FILELOG "log.txt"
+#define FILEBLOCK "block.txt"
+#define FILESLEEP "sleep.txt"
+#define FILERUN "run.txt"
 #define SEM_LOG "semLog"
+#define SEM_BLOCK "semBlock"
+#define SEM_SLEEP "semSleep"
+#define SEM_RUN "semRun"
+#define SEM_MEM "semMemoria"
 
 typedef struct Args{
 	int tAccion;
@@ -103,5 +111,10 @@ void clearFile(char * name){
 int getRandom(int maxVal){
 	srand(time(NULL));
 	return (rand() % maxVal) * 8;
+}
+
+sem_t * getSemaphore(char * nombre){
+	sem_t * sem = sem_open(nombre,0);
+	return sem;
 }
 
