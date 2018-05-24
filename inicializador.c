@@ -33,6 +33,10 @@ void inicializarMemoria(int memory){
 	
 }
 
+void createSemaphores(){
+	sem_open(SEM_LOG, O_CREAT | O_EXCL, 0644, 1);
+}
+
 int main(int argc, char * argv []) {
 	
 	if (argc != 2){
@@ -45,6 +49,8 @@ int main(int argc, char * argv []) {
 		fclose(f);
 		
 		inicializarMemoria(memory);
+		createSemaphores();
+		clearFile(FILELOG);
 	}
 	
 	return 0;

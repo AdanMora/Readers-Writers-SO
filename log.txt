@@ -1,6 +1,0 @@
-El proceso 0 del tipo Writer, a las 23:9:32, escribio: El Writer 0 escribio en la linea 0 a las 23:9:32, el 19/4/18.
-.
-El proceso 1 del tipo Writer, a las 23:9:35, escribio: El Writer 1 escribio en la linea 1 a las 23:9:35, el 19/4/18.
-.
-El proceso 2 del tipo Writer, a las 23:9:38, escribio: El Writer 2 escribio en la linea 2 a las 23:9:38, el 19/4/18.
-.

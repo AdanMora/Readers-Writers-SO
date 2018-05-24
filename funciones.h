@@ -11,4 +11,8 @@ char * getMsg(char *, int *);
 
 int * getDate();
 
+void clearFile(char *);
+
+int getRandom(int);
+
 #endif /* FUNCIONES */
