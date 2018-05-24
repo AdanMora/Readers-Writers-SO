@@ -1,15 +1,11 @@
 #include "funciones.c"
 
-int getNextLine(int idx, int * buffer, int memSize){
+int getNextLine(int * buffer, int memSize){
 	
-	while(idx != memSize){
-		if (buffer[idx] != -1){
-			return idx;
-		} else{
-			idx += 8;
-		}
-	}
-	
+	int idx = getRandom(memSize);
+    if (buffer[idx] != -1){
+        return idx;
+    }	
 	return -1;
 }
 
@@ -46,9 +42,11 @@ void * readLine(void * param){
 	
 	printMemoryLines(buffer, args->memory);
 	
-	while (TRUE){
+    int cont = 0;
+
+	while (cont != 2){
 		printf("Index Linea %d\n",indexLine);
-		indexLine = getNextLine(indexLine, buffer, args->memory*8);
+		indexLine = getNextLine(buffer, args->memory);
 		printf("Index Linea %d\n",indexLine);
 
 		if (indexLine != -1){
@@ -57,35 +55,42 @@ void * readLine(void * param){
 			int msg[8];
 
 			msg[0] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[1] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[2] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[3] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[4] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[5] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[6] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 			msg[7] = buffer[indexLine];
+            buffer[indexLine] = -1;
 			indexLine ++;
 
 			printf("Holi\n");
 
 			sem_post(&sem_log);
 			printf("WAIT\n");
-			writeLog(args->PID, 1, msg, fecha);
+			writeLog(args->PID, 2, msg, fecha);
    			sem_wait(&sem_log);
 			
 			printf("Sleep: %d\n",args->tAccion);
-			sleep(2);
+			//sleep(2);
 			
+            cont ++;
 
-		} else {
-			break;
 		}
 
 		printf("Index Linea %d\n",indexLine);
@@ -93,29 +98,31 @@ void * readLine(void * param){
 	}
 	printf("AAAAAAAAAH\n");
 
+    printMemoryLines(buffer, args->memory);
+
 }
 
 int main(int argc, char * argv []) {
 	
 	if (argc != 4){
-		printf("Cantidad invalida de parametros: ./reader cant tRead tSleep\n");
+		printf("Cantidad invalida de parametros: ./egoista cant tRead tSleep\n");
 	} else {
-		int cantReaders = atoi(argv[1]);
+		int cantEgoistas = atoi(argv[1]);
 		int tRead = atoi(argv[2]);
 		int tSleep = atoi(argv[3]);
 		int memory = getMemorySize();
 
 		
 		
-		for(int i = 0; i < cantReaders; i ++){
+		for(int i = 0; i < cantEgoistas; i ++){
 			Args * args = malloc(sizeof(Args));
 			args->tAccion = tRead;
 			args->tSleep = tSleep;
 			args->memory = memory;
 			args->PID = i;
 			
-			pthread_t reader;
-			pthread_create(&reader, 0, readLine,(void *)args);
+			pthread_t egoista;
+			pthread_create(&egoista, 0, readLine,(void *)args);
 			
 			sleep(1);
 		}

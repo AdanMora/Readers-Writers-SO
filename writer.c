@@ -1,8 +1,6 @@
 #include "funciones.c"
 
-int getNextLine(int * buffer, int memSize){
-	int idx = 0;
-	
+int getNextLine(int idx, int * buffer, int memSize){
 	while(idx != memSize){
 		if (buffer[idx] == -1){
 			return idx;
@@ -37,35 +35,49 @@ void * writeLine(void * param){
 		printf("Error reservando la memoria compartida\n");
 		exit(1);
 	}
+
+	int indexLine = 0;
+	int cont = 0;
+	while(cont != args->memory){
 	
-	int indexLine = getNextLine(buffer, args->memory*8);
+		indexLine = getNextLine(indexLine, buffer, args->memory*8);
+		printf("Index Linea %d\n",indexLine);
 	
-	if (indexLine != -1){
-	
-		int * fecha = getDate();
+		if (indexLine != -1){
+		
+			int * fecha = getDate();
 
-		int msg[8] = {args->PID, indexLine / 8, fecha[0], fecha[1], fecha[2], fecha[3], fecha[4], fecha[5]};
+			int msg[8] = {args->PID, indexLine / 8, fecha[0], fecha[1], fecha[2], fecha[3], fecha[4], fecha[5]};
 
-		buffer[indexLine] = args->PID;
-		indexLine ++;
-		buffer[indexLine] = msg[1];
-		indexLine ++;
-		buffer[indexLine] = fecha[0];
-		indexLine ++;
-		buffer[indexLine] = fecha[1];
-		indexLine ++;
-		buffer[indexLine] = fecha[2];
-		indexLine ++;
-		buffer[indexLine] = fecha[3];
-		indexLine ++;
-		buffer[indexLine] = fecha[4];
-		indexLine ++;
-		buffer[indexLine] = fecha[5];
+			buffer[indexLine] = args->PID;
+			indexLine ++;
+			buffer[indexLine] = msg[1];
+			indexLine ++;
+			buffer[indexLine] = fecha[0];
+			indexLine ++;
+			buffer[indexLine] = fecha[1];
+			indexLine ++;
+			buffer[indexLine] = fecha[2];
+			indexLine ++;
+			buffer[indexLine] = fecha[3];
+			indexLine ++;
+			buffer[indexLine] = fecha[4];
+			indexLine ++;
+			buffer[indexLine] = fecha[5];
+			indexLine ++;
 
-		writeLog(args->PID, 0, msg, fecha);
+			writeLog(args->PID, 0, msg, fecha);
+			printf("Bitacora\n");
+			//sleep(5);
+			printf("Sleep\n");
 
-		printMemoryLines(buffer, args->memory);
+			printMemoryLines(buffer, args->memory);
+
+			cont ++;
+		}
 	}
+
+	printf("AAAAAAAAAH\n");
 
 }
 

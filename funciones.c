@@ -6,13 +6,18 @@
 #include <time.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <semaphore.h>
+#include <fcntl.h>
 
 #include "funciones.h"
 
+#define TRUE 1
+#define FALSE 0
 #define FILEKEY "/bin/cat"
 #define KEY 1300
 #define FILESIZE "size.txt"
 #define FILELOG "log.txt"
+#define SEM_LOG "semLog"
 
 typedef struct Args{
 	int tAccion;
@@ -36,8 +41,10 @@ void writeLog(int PID, int tipo, int * msg, int hora[]){
 	}
 	if (tipo == 0){
 		fprintf(file,"El proceso %d del tipo %s, a las %d:%d:%d, escribio: %s.\n",PID, tipoStr, hora[0], hora[1], hora[2], parseMsg);
-	} else {
+	} else if (tipo == 1) {
 		fprintf(file,"El proceso %d del tipo %s, a las %d:%d:%d, leyo: %s.\n", PID, tipoStr, hora[0], hora[1], hora[2], parseMsg);
+	} else {
+		fprintf(file,"El proceso %d del tipo %s, a las %d:%d:%d, leyo y borro: %s.\n", PID, tipoStr, hora[0], hora[1], hora[2], parseMsg);
 	}
 	fclose(file);
 }
@@ -86,5 +93,15 @@ int * getDate(){
 	printf("H: %d:%d:%d  F: %d/%d/%d\n", fecha[0],fecha[1],fecha[2],fecha[3],fecha[4],fecha[5]);
 	
 	return fecha;
+}
+
+void clearFile(char * name){
+	FILE *f = fopen(name,"w");
+	fclose(f);
+}
+
+int getRandom(int maxVal){
+	srand(time(NULL));
+	return (rand() % maxVal) * 8;
 }
 
