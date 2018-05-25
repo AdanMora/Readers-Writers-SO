@@ -118,3 +118,179 @@ sem_t * getSemaphore(char * nombre){
 	return sem;
 }
 
+void appendText(char * name, int pid, int tipo){
+	char sentence[1000];
+	char tipoStr[15];
+	FILE *fptr;
+
+	fptr = fopen(name, "a");
+	if(fptr == NULL)
+	{
+		printf("Error!");
+		exit(1);
+	}
+
+	if(tipo == 0){
+		strcpy(tipoStr,"Writer");
+	} else if (tipo == 1){
+		strcpy(tipoStr,"Reader");
+	} else {
+		strcpy(tipoStr,"Reader Egoista");
+	}
+   
+	//strcpy(sentence, "hola");
+
+	fprintf(fptr,"%s %d", tipoStr, pid);
+	fclose(fptr);
+}
+
+//funciones para borrar
+int lineNumber(char* pid, int tipoT){
+	
+	char aux = pid[0];
+	FILE * file;
+	file = fopen("prueba.txt","r");
+	char c;
+	bool tipo = 0;
+	bool id =0;
+	bool find = 0;
+	c = 's';
+	int line = 1;
+	char proceso;
+	if(tipoT==0){
+		proceso='W';
+	}
+	else if(tipo ==1){
+		proceso='R';
+	}
+	else{
+		proceso='E';
+	}	
+
+	
+	while (c != EOF){
+		
+		c = getc(file);
+		if(c==proceso){
+			
+			tipo=1;			
+		}
+		if(c == aux){
+			id=1;
+		}
+
+		if(c=='\n'){
+			
+			if(tipo && id){
+				find = 1;
+				printf("lo encontre\n");
+				break;
+			}
+		tipo = 0;
+		id=0;
+		line++;
+		}
+		
+	}
+	return line;
+
+}    
+
+
+void removeText(char* name, int pid, int tipo){
+
+	FILE *fileptr1, *fileptr2;
+
+        char filename[40];
+	char tipoTxt = pid+'0';
+        char ch;
+
+        int delete_line, temp = 1;
+	int as;
+	
+     	as = lineNumber("1");
+
+       strcpy(filename,name);
+
+        //open file in read mode
+
+        fileptr1 = fopen(filename, "r");
+
+        ch = getc(fileptr1);
+
+        while (ch != EOF)
+
+        {
+
+            printf("%c", ch);
+
+            ch = getc(fileptr1);
+
+        }
+
+        //rewind
+
+        rewind(fileptr1);
+
+        //printf(" \n Enter line number of the line to be deleted:");
+
+        //scanf("%d", &delete_line);
+
+        //open new file in write mode
+
+        fileptr2 = fopen("replica.c", "w");
+
+        ch='s';
+
+        while (ch != EOF)
+
+        {
+
+            ch = getc(fileptr1);
+            printf("char = %c", ch);
+
+            if (ch == '\n')
+
+                temp++;
+
+                //except the line to be deleted
+
+                if (temp != as)
+
+                {
+
+                    //copy all lines in file replica.c
+
+                    putc(ch, fileptr2);
+
+                }
+
+        }
+        fclose(fileptr1);
+
+        fclose(fileptr2);
+
+            remove(filename);
+
+    //rename the file replica.c to original name
+
+    rename("replica.c", filename);
+
+        printf("\n The contents of file after being modified are as follows:\n");
+
+        fileptr1 = fopen(filename, "r");
+
+        ch = getc(fileptr1);
+
+        while (ch != EOF)
+
+        {
+
+            printf("%c", ch);
+
+            ch = getc(fileptr1);
+
+        }
+
+        fclose(fileptr1);
+}
