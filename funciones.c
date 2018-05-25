@@ -9,6 +9,7 @@
 #include <semaphore.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include "funciones.h"
 
@@ -208,7 +209,7 @@ void removeText(char* name, int pid, int tipo){
         int delete_line, temp = 1;
 	int as;
 	
-     	as = lineNumber("1");
+     	as = lineNumber("1", tipo);
 
        strcpy(filename,name);
 
