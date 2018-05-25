@@ -44,21 +44,21 @@ void * readLine(void * param){
 
 	while (cont != 2){
 
-		sem_post(sem_block);
+		//sem_post(sem_block);
 		//agregar
-		sem_wait(sem_block);
+		//sem_wait(sem_block);
 
 		sem_post(sem_memoria);
 
-		printMemoryLines(buffer, args->memory);
+		//printMemoryLines(buffer, args->memory);
 
-		sem_post(sem_block);
+		//sem_post(sem_block);
 		//eliminar
-		sem_wait(sem_block);
+		//sem_wait(sem_block);
 
-		sem_post(sem_run);
+		//sem_post(sem_run);
 		//agregar
-		sem_wait(sem_run);
+		//sem_wait(sem_run);
 
 		printf("Index Linea %d\n",indexLine);
 		indexLine = getNextLine(buffer, args->memory);
@@ -94,29 +94,24 @@ void * readLine(void * param){
             buffer[indexLine] = -1;
 			indexLine ++;
 
-			printf("Holi\n");
-
 			sem_post(sem_log);
-			printf("WAIT\n");
 			writeLog(args->PID, 2, msg, fecha);
    			sem_wait(sem_log);
 			
-			printf("Sleep: %d\n",args->tAccion);
+			//printf("Sleep: %d\n",args->tAccion);
 			//sleep(2);
 			
             cont ++;
 
 		}
 
-		printf("Index Linea %d\n",indexLine);
-
-		sem_post(sem_run);
+		//sem_post(sem_run);
 		//eliminar
-		sem_wait(sem_run);
+		//sem_wait(sem_run);
 
-		sem_post(sem_sleep);
+		//sem_post(sem_sleep);
 		//agregar
-		sem_wait(sem_sleep);
+		//sem_wait(sem_sleep);
 
 		sem_wait(sem_memoria);
 		

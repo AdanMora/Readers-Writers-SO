@@ -44,7 +44,7 @@ void * writeLine(void * param){
 
 	int indexLine = 0;
 	int cont = 0;
-	while(cont != args->memory){
+	while(cont != 3){
 
 		sem_post(sem_block);
 		//agregar

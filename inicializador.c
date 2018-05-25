@@ -56,7 +56,7 @@ int main(int argc, char * argv []) {
 		createSemaphores();
 		clearFile(FILELOG);
 		clearFile(FILEBLOCK);
-		clearFile(FILESLEEP;
+		clearFile(FILESLEEP);
 		clearFile(FILERUN);
 	}
 	

@@ -100,7 +100,7 @@ void * readLine(void * param){
    			sem_wait(sem_log);
 			
 			printf("Sleep: %d\n",args->tAccion);
-			sleep(2);
+			//sleep(2);
 			
 
 		} else {

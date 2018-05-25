@@ -1,24 +1,40 @@
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 0 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:58:17, escribio: El Writer 0 escribio en la linea 0 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 1 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:58:17, escribio: El Writer 0 escribio en la linea 1 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 2 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:58:17, escribio: El Writer 0 escribio en la linea 2 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 3 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Reader Egoista, a las 20:58:24, leyo y borro: El Writer 0 escribio en la linea 0 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 4 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Reader Egoista, a las 20:58:25, leyo y borro: El Writer 0 escribio en la linea 1 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 5 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Reader, a las 20:58:34, leyo: El Writer 0 escribio en la linea 2 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 6 a las 19:57:25, el 23/4/18.
+El proceso 1 del tipo Reader, a las 20:58:35, leyo: El Writer 0 escribio en la linea 2 a las 20:58:17, el 24/4/18.
 .
-El proceso 0 del tipo Writer, a las 19:57:25, escribio: El Writer 0 escribio en la linea 7 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:59:55, escribio: El Writer 0 escribio en la linea 0 a las 20:59:55, el 24/4/18.
 .
-El proceso 0 del tipo Reader Egoista, a las 19:57:56, leyo y borro: El Writer 0 escribio en la linea 7 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:59:55, escribio: El Writer 0 escribio en la linea 1 a las 20:59:55, el 24/4/18.
 .
-El proceso 0 del tipo Reader Egoista, a las 19:57:57, leyo y borro: El Writer 0 escribio en la linea 1 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Writer, a las 20:59:55, escribio: El Writer 0 escribio en la linea 3 a las 20:59:55, el 24/4/18.
 .
-El proceso 0 del tipo Reader Egoista, a las 19:59:20, leyo y borro: El Writer 0 escribio en la linea 2 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Reader, a las 21:0:47, leyo: El Writer 0 escribio en la linea 0 a las 20:59:55, el 24/4/18.
 .
-El proceso 0 del tipo Reader Egoista, a las 19:59:21, leyo y borro: El Writer 0 escribio en la linea 5 a las 19:57:25, el 23/4/18.
+El proceso 0 del tipo Reader, a las 21:0:47, leyo: El Writer 0 escribio en la linea 1 a las 20:59:55, el 24/4/18.
+.
+El proceso 0 del tipo Reader, a las 21:0:47, leyo: El Writer 0 escribio en la linea 2 a las 20:58:17, el 24/4/18.
+.
+El proceso 0 del tipo Reader, a las 21:0:47, leyo: El Writer 0 escribio en la linea 3 a las 20:59:55, el 24/4/18.
+.
+El proceso 1 del tipo Reader, a las 21:0:48, leyo: El Writer 0 escribio en la linea 0 a las 20:59:55, el 24/4/18.
+.
+El proceso 1 del tipo Reader, a las 21:0:48, leyo: El Writer 0 escribio en la linea 1 a las 20:59:55, el 24/4/18.
+.
+El proceso 1 del tipo Reader, a las 21:0:48, leyo: El Writer 0 escribio en la linea 2 a las 20:58:17, el 24/4/18.
+.
+El proceso 1 del tipo Reader, a las 21:0:48, leyo: El Writer 0 escribio en la linea 3 a las 20:59:55, el 24/4/18.
+.
+El proceso 0 del tipo Reader Egoista, a las 21:0:56, leyo y borro: El Writer 0 escribio en la linea 1 a las 20:59:55, el 24/4/18.
+.
+El proceso 0 del tipo Reader Egoista, a las 21:0:57, leyo y borro: El Writer 0 escribio en la linea 3 a las 20:59:55, el 24/4/18.
 .
