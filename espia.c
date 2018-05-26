@@ -28,20 +28,74 @@ int * inicializarMemoria(int memory){
 	return buffer;
 }
 
-void verEstado(char* name){
-	FILE *archivo;
-	char ch='s';
-	archivo = fopen(name,"r");
-	while (ch != EOF)
+void verEstadoAux(int tipo){
+	char proceso;
+	if(tipo == 0){
+		proceso = 'W';
+		verEstado(proceso);
+	}
+	else if(tipo ==1){
+		proceso = 'R';
+		verEstado(proceso);		
+	}else{
+		proceso = 'E';
+		verEstado(proceso);
+	}
 
-        {
-
-            printf("%c", ch);
-
-            ch = getc(archivo);
-
-        }
+	
 }
+
+void verEstado(char tipo){
+	FILE * archivo;
+	bool flag = 0;
+	char ch ='s';
+	archivo = fopen(FILEBLOCK,"r");
+	while(ch!= EOF){
+		ch=getc(archivo);
+		if(ch == tipo){
+			while(ch!= '\n'){
+				printf("%c",ch);
+				ch = getc(archivo);
+			}
+			printf(" esta bloqueado\n");
+		}
+		
+			
+	}
+
+	fclose(archivo);
+	ch='e';
+	archivo = fopen(FILERUN,"r");
+	
+	while(ch!= EOF){
+		ch=getc(archivo);
+		if(ch == tipo){
+			while(ch!= '\n'){
+				printf("%c",ch);
+				ch = getc(archivo);
+			}
+			printf(" esta corriendo\n");
+		}
+	}
+	ch='s';
+	
+	fclose(archivo);
+	
+	archivo = fopen(FILESLEEP,"r");
+	while(ch!= EOF){
+		ch=getc(archivo);
+		if(ch == tipo){
+			while(ch!= '\n'){
+				printf("%c",ch);
+				ch = getc(archivo);
+			}
+			printf(" esta durmiendo\n");
+		}
+	}
+
+	fclose(archivo);
+
+	}
 
 void menu(){
 	int memory = getMemorySize(FILESIZE);
@@ -72,17 +126,17 @@ void menu(){
 				break;
 			case 2:	
 				printf("======Writers======\n");
-				verEstado(FILERUN);
+				verEstadoAux(0);
 				printf("===================\n");
 				break;
 			case 3:
 				printf("======Readers======\n");
-				verEstado(FILERUN);
+				verEstadoAux(1);
 				printf("===================\n");
 				break;
 			case 4:
 				printf("======Egoistas======\n");
-				verEstado(FILERUN);
+				verEstadoAux(2);
 				printf("===================\n");;
 				break;
 
