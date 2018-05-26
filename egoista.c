@@ -44,17 +44,17 @@ void * readLine(void * param){
 	while (TRUE){
 
 		sem_wait(sem_block);
-		//agregar
+		appendText(FILEBLOCK, args->PID, 2);
 		sem_post(sem_block);
 
 		sem_wait(sem_memoria);
 
 		sem_wait(sem_block);
-		//eliminar
+		removeText(FILEBLOCK, args->PID, 2);
 		sem_post(sem_block);
 
 		sem_wait(sem_run);
-		//agregar
+		appendText(FILERUN, args->PID, 2);
 		sem_post(sem_run);
 
 		indexLine = getNextLine(buffer, args->memory);
@@ -100,11 +100,11 @@ void * readLine(void * param){
 		}
 
 		sem_wait(sem_run);
-		//eliminar
+		removeText(FILERUN, args->PID, 2);
 		sem_post(sem_run);
 
 		sem_wait(sem_sleep);
-		//agregar
+		appendText(FILESLEEP, args->PID, 2);
 		sem_post(sem_sleep);
 
 		sem_post(sem_memoria);
@@ -113,7 +113,7 @@ void * readLine(void * param){
 		sleep(args->tSleep);
 
 		sem_wait(sem_sleep);
-		//eliminar
+		removeText(FILESLEEP, args->PID, 2);
 		sem_post(sem_sleep);
 		
 	}

@@ -261,5 +261,5 @@ void removeText(char* name, int pid, int tipo){
     rename("replica.c", filename);
 
 
-		printf("\nProceso agregado...\n");
+		//printf("\nProceso agregado...\n");
 }

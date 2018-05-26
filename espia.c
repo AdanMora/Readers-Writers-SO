@@ -28,23 +28,6 @@ int * inicializarMemoria(int memory){
 	return buffer;
 }
 
-void verEstadoAux(int tipo){
-	char proceso;
-	if(tipo == 0){
-		proceso = 'W';
-		verEstado(proceso);
-	}
-	else if(tipo ==1){
-		proceso = 'R';
-		verEstado(proceso);		
-	}else{
-		proceso = 'E';
-		verEstado(proceso);
-	}
-
-	
-}
-
 void verEstado(char tipo){
 	FILE * archivo;
 	bool flag = 0;
@@ -97,6 +80,23 @@ void verEstado(char tipo){
 
 	}
 
+void verEstadoAux(int tipo){
+	char proceso;
+	if(tipo == 0){
+		proceso = 'W';
+		verEstado(proceso);
+	}
+	else if(tipo ==1){
+		proceso = 'R';
+		verEstado(proceso);		
+	}else{
+		proceso = 'E';
+		verEstado(proceso);
+	}
+
+	
+}
+
 void menu(){
 	int memory = getMemorySize(FILESIZE);
 	int * buffer = inicializarMemoria(memory);
@@ -120,23 +120,41 @@ void menu(){
 
 		switch(choice){
 			case 1:
-				sem_post(sem_memoria);
-				printMemoryLines(buffer, memory);
 				sem_wait(sem_memoria);
+				printMemoryLines(buffer, memory);
+				sem_post(sem_memoria);
 				break;
 			case 2:	
 				printf("======Writers======\n");
+				sem_wait(sem_block);
+				sem_wait(sem_sleep);
+				sem_wait(sem_run);
 				verEstadoAux(0);
+				sem_post(sem_run);
+				sem_post(sem_sleep);
+				sem_post(sem_block);
 				printf("===================\n");
 				break;
 			case 3:
 				printf("======Readers======\n");
+				sem_wait(sem_block);
+				sem_wait(sem_sleep);
+				sem_wait(sem_run);
 				verEstadoAux(1);
+				sem_post(sem_run);
+				sem_post(sem_sleep);
+				sem_post(sem_block);
 				printf("===================\n");
 				break;
 			case 4:
 				printf("======Egoistas======\n");
+				sem_wait(sem_block);
+				sem_wait(sem_sleep);
+				sem_wait(sem_run);
 				verEstadoAux(2);
+				sem_post(sem_run);
+				sem_post(sem_sleep);
+				sem_post(sem_block);
 				printf("===================\n");;
 				break;
 

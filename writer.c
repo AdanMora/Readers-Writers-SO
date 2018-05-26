@@ -47,17 +47,17 @@ void * writeLine(void * param){
 	while(TRUE){
 
 		sem_wait(sem_block);
-		//appendText(FILEBLOCK, args->PID, 0);
+		appendText(FILEBLOCK, args->PID, 0);
 		sem_post(sem_block);
 
 		sem_wait(sem_memoria);
 
 		sem_wait(sem_block);
-		//removeText(FILEBLOCK, args->PID, 0);
+		removeText(FILEBLOCK, args->PID, 0);
 		sem_post(sem_block);
 
 		sem_wait(sem_run);
-		//agregar
+		appendText(FILERUN, args->PID, 0);
 		sem_post(sem_run);
 
 	
@@ -90,16 +90,17 @@ void * writeLine(void * param){
 			writeLog(args->PID, 0, msg, fecha);
    			sem_post(sem_log);
 
+			printf("\nWriter %d Escribiendo...\n", args->PID);
 			sleep(args->tAccion);
 
 		}
 
 		sem_wait(sem_run);
-		//eliminar
+		removeText(FILERUN, args->PID, 0);
 		sem_post(sem_run);
 
 		sem_wait(sem_sleep);
-		//agregar
+		appendText(FILESLEEP, args->PID, 0);
 		sem_post(sem_sleep);
 
 		sem_post(sem_memoria);
@@ -108,7 +109,7 @@ void * writeLine(void * param){
 		sleep(args->tSleep);
 
 		sem_wait(sem_sleep);
-		//eliminar
+		removeText(FILESLEEP, args->PID, 0);
 		sem_post(sem_sleep);
 	}
 
