@@ -138,7 +138,7 @@ void appendText(char * name, int pid, int tipo){
 	} else if (tipo == 1){
 		strcpy(tipoStr,"Reader");
 	} else {
-		strcpy(tipoStr,"Reader Egoista");
+		strcpy(tipoStr,"Egoista");
 	}
    
 	//strcpy(sentence, "hola");
@@ -149,11 +149,12 @@ void appendText(char * name, int pid, int tipo){
 }
 
 //funciones para borrar
-int lineNumber(char* pid, int tipoT){
-	
-	char aux = pid[0];
+int lineNumber(char* name,int pid, int tipoT){
+	puts("line antes");
+	char aux = pid+'0';
+	puts("line despues");
 	FILE * file;
-	file = fopen("prueba.txt","r");
+	file = fopen(name,"r");
 	char c;
 	bool tipo = 0;
 	bool id =0;
@@ -206,43 +207,22 @@ void removeText(char* name, int pid, int tipo){
 	FILE *fileptr1, *fileptr2;
 
         char filename[40];
+	
 	char tipoTxt = pid+'0';
         char ch;
-
-        int delete_line, temp = 1;
-	int as;
 	
-     	as = lineNumber("1", tipo);
-
+        int delete_line, temp = 1;
+	int as=0;
+	puts("antes");
+     	as = lineNumber(name,pid, tipo);
+	puts("despues");
        strcpy(filename,name);
 
         //open file in read mode
 
         fileptr1 = fopen(filename, "r");
 
-        ch = getc(fileptr1);
-
-        while (ch != EOF)
-
-        {
-
-            printf("%c", ch);
-
-            ch = getc(fileptr1);
-
-        }
-
-        //rewind
-
-        rewind(fileptr1);
-
-        //printf(" \n Enter line number of the line to be deleted:");
-
-        //scanf("%d", &delete_line);
-
-        //open new file in write mode
-
-        fileptr2 = fopen("replica.c", "w");
+        fileptr2 = fopen("replica.c", "a");
 
         ch='s';
 
@@ -280,23 +260,6 @@ void removeText(char* name, int pid, int tipo){
 
     rename("replica.c", filename);
 
-        printf("\n The contents of file after being modified are as follows:\n");
-
-        fileptr1 = fopen(filename, "r");
-
-        ch = getc(fileptr1);
-
-        while (ch != EOF)
-
-        {
-
-            printf("%c", ch);
-
-            ch = getc(fileptr1);
-
-        }
-
-        fclose(fileptr1);
 
 		printf("\nProceso agregado...\n");
 }
