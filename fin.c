@@ -1,34 +1,22 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/types.h>  
-#include <sys/ipc.h>
-#include <sys/shm.h> 
-#include <string.h>
-#include <unistd.h> 
-#include <errno.h>
-#include <fcntl.h>
-#include <semaphore.h>
-#include <time.h>
-#include <pthread.h>
+#include "funciones.c"
 
-#define FILEKEY "/bin/cat"
-#define KEY 1300
-#define FILE_SIZE "size.txt"
+#define KILL_Writer "kill -9 $(pidof writer)"
+#define KILL_Reader "kill -9 $(pidof reader)"
+#define KILL_Egoista "kill -9 $(pidof egoista)"
 
-int getMemorySize(char * filename){
-	FILE *f = fopen(filename, "r");
-	char * line = NULL;
-	size_t len = 0;
 
-	getline(&line, &len, f);
-	return atoi(line);
+
+void deleteSemaphore(char * name){
+	sem_t * sem = sem_open(name, 0);
+	sem_unlink(name);
+	sem_close(sem);
+	sem_destroy(sem);
 }
 
 void deleteMemory(char * fileKey, int k){
 	int key = ftok(fileKey, k);
 
-	int memory = getMemorySize(FILE_SIZE);
+	int memory = getMemorySize(FILESIZE);
 
 	int id_zone = shmget (key, sizeof(int)*memory, 0777 | IPC_CREAT);
 
@@ -41,10 +29,17 @@ void deleteMemory(char * fileKey, int k){
 
 int main(int argc, char const *argv[])
 {
-	
+	system(KILL_Writer);
+	system(KILL_Reader);
+	system(KILL_Egoista);
 	deleteMemory(FILEKEY, KEY);
+	deleteSemaphore(SEM_MEM);
+	deleteSemaphore(SEM_LOG);
+	deleteSemaphore(SEM_BLOCK);
+	deleteSemaphore(SEM_RUN);
+	deleteSemaphore(SEM_SLEEP);
 	
-	printf("* MEMORIA Y SEMAFOROS LIBERADOS *\n");
+	printf("* PROCESOS MATADOS, MEMORIA Y SEMAFOROS LIBERADOS *\n");
 	return 0;
 }
 

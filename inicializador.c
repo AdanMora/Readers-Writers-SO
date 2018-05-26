@@ -28,8 +28,6 @@ void inicializarMemoria(int memory){
 	for (int i = 0; i < (8*memory); i++){
 		buffer[i] = -1;
 	}
-
-	printMemoryLines(buffer, memory);
 	
 }
 

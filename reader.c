@@ -1,9 +1,23 @@
 #include "funciones.c"
 
-int getNextLine(int idx, int * buffer, int memSize){
-	
+int hayLineas(int * buffer, int memSize){
+	int idx = 0;
 	while(idx != memSize){
 		if (buffer[idx] != -1){
+			return 1;
+		} else{
+			idx += 8;
+		}
+	}
+	
+	return 0;
+}
+
+int getNextLine(int idx, int * buffer, int memSize){
+	while(hayLineas(buffer, memSize)){
+		if (idx == memSize){
+			return -1;
+		}else if (buffer[idx] != -1){
 			return idx;
 		} else{
 			idx += 8;
@@ -49,29 +63,24 @@ void * readLine(void * param){
 	
 	while (TRUE){
 
-		sem_post(sem_block);
-		//agregar
 		sem_wait(sem_block);
-
-		sem_post(sem_memoria);
-	
-		printMemoryLines(buffer, args->memory);
-
+		//agregar
 		sem_post(sem_block);
+
+		sem_wait(sem_memoria);
+
+		sem_wait(sem_block);
 		//eliminar
-		sem_wait(sem_block);
+		sem_post(sem_block);
 
-		sem_post(sem_run);
-		//agregar
 		sem_wait(sem_run);
+		//agregar
+		sem_post(sem_run);
 
+		indexLine = getNextLine(0, buffer, args->memory*8);
 
-		printf("Index Linea %d\n",indexLine);
-		indexLine = getNextLine(indexLine, buffer, args->memory*8);
-		printf("Index Linea %d\n",indexLine);
-
-		if (indexLine != -1){
-		
+		while (indexLine != -1){
+			
 			int * fecha = getDate();
 			int msg[8];
 
@@ -92,33 +101,35 @@ void * readLine(void * param){
 			msg[7] = buffer[indexLine];
 			indexLine ++;
 
-			printf("Holi\n");
-
-			sem_post(sem_log);
-			printf("WAIT\n");
+			sem_wait(sem_log);
 			writeLog(args->PID, 1, msg, fecha);
-   			sem_wait(sem_log);
+   			sem_post(sem_log);
 			
-			printf("Sleep: %d\n",args->tAccion);
-			//sleep(2);
-			
+			printf("\nReader %d Leyendo...\n", args->PID);
+			sleep(args->tAccion);
 
-		} else {
-			break;
+			indexLine = getNextLine(indexLine, buffer, args->memory*8);
 		}
 
-		sem_post(sem_run);
-		//eliminar
+		indexLine = getNextLine(0, buffer, args->memory*8);
+
 		sem_wait(sem_run);
+		//eliminar
+		sem_post(sem_run);
 
-		sem_post(sem_sleep);
-		//agregar
 		sem_wait(sem_sleep);
+		//agregar
+		sem_post(sem_sleep);
 
-		sem_wait(sem_memoria);
-		
+		sem_post(sem_memoria);
+
+		printf("\nSleep\n\n############\n");
+		sleep(args->tSleep);
+
+		sem_wait(sem_sleep);
+		//eliminar
+		sem_post(sem_sleep);
 	}
-	printf("AAAAAAAAAH\n");
 
 }
 
@@ -132,7 +143,7 @@ int main(int argc, char * argv []) {
 		int tSleep = atoi(argv[3]);
 		int memory = getMemorySize();
 
-		
+		pthread_t reader;
 		
 		for(int i = 0; i < cantReaders; i ++){
 			Args * args = malloc(sizeof(Args));
@@ -141,11 +152,12 @@ int main(int argc, char * argv []) {
 			args->memory = memory;
 			args->PID = i;
 			
-			pthread_t reader;
 			pthread_create(&reader, 0, readLine,(void *)args);
 			
-			sleep(1);
+			//sleep(1);
 		}
+
+		pthread_join(reader, NULL);
 	}
 	
 	return 0;

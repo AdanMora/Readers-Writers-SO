@@ -17,11 +17,13 @@
 #define FALSE 0
 #define FILEKEY "/bin/cat"
 #define KEY 1300
+
 #define FILESIZE "size.txt"
 #define FILELOG "log.txt"
 #define FILEBLOCK "block.txt"
 #define FILESLEEP "sleep.txt"
 #define FILERUN "run.txt"
+
 #define SEM_LOG "semLog"
 #define SEM_BLOCK "semBlock"
 #define SEM_SLEEP "semSleep"
@@ -99,7 +101,7 @@ int * getDate(){
 	fecha[4] = tm_struct->tm_mon;
 	fecha[5]  = tm_struct->tm_year - 100;
 	
-	printf("H: %d:%d:%d  F: %d/%d/%d\n", fecha[0],fecha[1],fecha[2],fecha[3],fecha[4],fecha[5]);
+	//printf("H: %d:%d:%d  F: %d/%d/%d\n", fecha[0],fecha[1],fecha[2],fecha[3],fecha[4],fecha[5]);
 	
 	return fecha;
 }
@@ -141,8 +143,9 @@ void appendText(char * name, int pid, int tipo){
    
 	//strcpy(sentence, "hola");
 
-	fprintf(fptr,"%s %d", tipoStr, pid);
+	fprintf(fptr,"%s %d\n", tipoStr, pid);
 	fclose(fptr);
+	//printf("\nProceso agregado...\n");
 }
 
 //funciones para borrar
@@ -294,4 +297,6 @@ void removeText(char* name, int pid, int tipo){
         }
 
         fclose(fileptr1);
+
+		printf("\nProceso agregado...\n");
 }

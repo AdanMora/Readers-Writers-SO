@@ -1,5 +1,33 @@
 #include "funciones.c"
 
+int * inicializarMemoria(int memory){
+	
+	int key = ftok(FILEKEY, KEY);
+	if(key == -1){
+		printf("Error con la llave\n");
+		exit(1);
+	}
+
+	// Creamos la memoria compartida
+	int id = shmget (key, sizeof(int)*(8*memory), 0777 | IPC_CREAT);
+	if (id == -1) {
+		printf("Error creando la memoria compartida \n");
+		exit(1);
+	}
+	printf("* MEMORIA ACCEDIDA CON EXITO *\n");
+
+	int *buffer; /* shared buffer */
+
+	/* we declared to zone to share */
+	buffer = shmat (id, (char *)0, 0);
+	if (buffer == NULL) {
+		printf("Error reservando la memoria compartida\n");
+		exit(1);
+	}
+
+	return buffer;
+}
+
 void verEstado(char* name){
 	FILE *archivo;
 	char ch='s';
@@ -17,10 +45,16 @@ void verEstado(char* name){
 
 void menu(){
 	int memory = getMemorySize(FILESIZE);
+	int * buffer = inicializarMemoria(memory);
+	sem_t * sem_block = getSemaphore(SEM_BLOCK);
+	sem_t * sem_sleep = getSemaphore(SEM_SLEEP);
+	sem_t * sem_run = getSemaphore(SEM_RUN);
+	sem_t * sem_memoria = getSemaphore(SEM_MEM);
+
 	int choice;
 	do{
-		printf("#####################\n");
-		printf("Bienvenido al menu del espia, digite una opcion\n");
+		printf("#####################\n\n");
+		printf("Bienvenido al menu del espia, digite una opcion\n\n");
 		printf("1 - Ver estado de la memoria\n");
 		printf("2 - Ver estado de los Writers\n");
 		printf("3 - Ver estado de los Readers\n");
@@ -32,7 +66,9 @@ void menu(){
 
 		switch(choice){
 			case 1:
-				//seeMemoryState(FILEKEY, KEY, memory);
+				sem_post(sem_memoria);
+				printMemoryLines(buffer, memory);
+				sem_wait(sem_memoria);
 				break;
 			case 2:	
 				printf("======Writers======\n");
@@ -45,7 +81,7 @@ void menu(){
 				printf("===================\n");
 				break;
 			case 4:
-				printf("======Writers======\n");
+				printf("======Egoistas======\n");
 				verEstado(FILERUN);
 				printf("===================\n");;
 				break;

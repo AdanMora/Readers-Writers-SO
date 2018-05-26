@@ -38,31 +38,26 @@ void * readLine(void * param){
 		printf("Error reservando la memoria compartida\n");
 		exit(1);
 	}
-	
-	int indexLine = 0;
-    int cont = 0;
 
-	while (cont != 2){
+	int indexLine;
 
-		//sem_post(sem_block);
+	while (TRUE){
+
+		sem_wait(sem_block);
 		//agregar
-		//sem_wait(sem_block);
+		sem_post(sem_block);
 
-		sem_post(sem_memoria);
+		sem_wait(sem_memoria);
 
-		//printMemoryLines(buffer, args->memory);
-
-		//sem_post(sem_block);
+		sem_wait(sem_block);
 		//eliminar
-		//sem_wait(sem_block);
+		sem_post(sem_block);
 
-		//sem_post(sem_run);
+		sem_wait(sem_run);
 		//agregar
-		//sem_wait(sem_run);
+		sem_post(sem_run);
 
-		printf("Index Linea %d\n",indexLine);
 		indexLine = getNextLine(buffer, args->memory);
-		printf("Index Linea %d\n",indexLine);
 
 		if (indexLine != -1){
 		
@@ -92,33 +87,36 @@ void * readLine(void * param){
 			indexLine ++;
 			msg[7] = buffer[indexLine];
             buffer[indexLine] = -1;
-			indexLine ++;
 
-			sem_post(sem_log);
+			sem_wait(sem_log);
 			writeLog(args->PID, 2, msg, fecha);
-   			sem_wait(sem_log);
+   			sem_post(sem_log);
 			
-			//printf("Sleep: %d\n",args->tAccion);
-			//sleep(2);
-			
-            cont ++;
+			printf("\nEgoista %d Leyendo y borrando...\n", args->PID);
+			sleep(args->tAccion);
 
+		} else {
+			printf("\nEgoista %d no encontro nada para leer...\n", args->PID);
 		}
 
-		//sem_post(sem_run);
+		sem_wait(sem_run);
 		//eliminar
-		//sem_wait(sem_run);
+		sem_post(sem_run);
 
-		//sem_post(sem_sleep);
+		sem_wait(sem_sleep);
 		//agregar
-		//sem_wait(sem_sleep);
+		sem_post(sem_sleep);
 
-		sem_wait(sem_memoria);
+		sem_post(sem_memoria);
+
+		printf("\nSleep\n\n############\n");
+		sleep(args->tSleep);
+
+		sem_wait(sem_sleep);
+		//eliminar
+		sem_post(sem_sleep);
 		
 	}
-	printf("AAAAAAAAAH\n");
-
-    printMemoryLines(buffer, args->memory);
 
 }
 
@@ -132,7 +130,7 @@ int main(int argc, char * argv []) {
 		int tSleep = atoi(argv[3]);
 		int memory = getMemorySize();
 
-		
+		pthread_t egoista;
 		
 		for(int i = 0; i < cantEgoistas; i ++){
 			Args * args = malloc(sizeof(Args));
@@ -141,11 +139,13 @@ int main(int argc, char * argv []) {
 			args->memory = memory;
 			args->PID = i;
 			
-			pthread_t egoista;
+			
 			pthread_create(&egoista, 0, readLine,(void *)args);
 			
-			sleep(1);
+			//sleep(1);
 		}
+
+		pthread_join(egoista, NULL);
 	}
 	
 	return 0;

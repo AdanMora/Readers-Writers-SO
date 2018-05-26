@@ -42,27 +42,26 @@ void * writeLine(void * param){
 		exit(1);
 	}
 
-	int indexLine = 0;
-	int cont = 0;
-	while(cont != 3){
+	int indexLine;
 
-		sem_post(sem_block);
-		//agregar
+	while(TRUE){
+
 		sem_wait(sem_block);
-
-		sem_post(sem_memoria);
-
+		//appendText(FILEBLOCK, args->PID, 0);
 		sem_post(sem_block);
-		//eliminar
-		sem_wait(sem_block);
 
-		sem_post(sem_run);
-		//agregar
+		sem_wait(sem_memoria);
+
+		sem_wait(sem_block);
+		//removeText(FILEBLOCK, args->PID, 0);
+		sem_post(sem_block);
+
 		sem_wait(sem_run);
+		//agregar
+		sem_post(sem_run);
 
 	
-		indexLine = getNextLine(indexLine, buffer, args->memory*8);
-		printf("Index Linea %d\n",indexLine);
+		indexLine = getNextLine(0, buffer, args->memory*8);
 	
 		if (indexLine != -1){
 		
@@ -87,28 +86,31 @@ void * writeLine(void * param){
 			buffer[indexLine] = fecha[5];
 			indexLine ++;
 
+			sem_wait(sem_log);
 			writeLog(args->PID, 0, msg, fecha);
-			printf("Bitacora\n");
-			//sleep(5);
-			printf("Sleep\n");
+   			sem_post(sem_log);
 
-			printMemoryLines(buffer, args->memory);
+			sleep(args->tAccion);
 
-			cont ++;
 		}
 
-		sem_post(sem_run);
-		//eliminar
 		sem_wait(sem_run);
+		//eliminar
+		sem_post(sem_run);
 
-		sem_post(sem_sleep);
-		//agregar
 		sem_wait(sem_sleep);
+		//agregar
+		sem_post(sem_sleep);
 
-		sem_wait(sem_memoria);
+		sem_post(sem_memoria);
+
+		printf("\nSleep\n\n############\n");
+		sleep(args->tSleep);
+
+		sem_wait(sem_sleep);
+		//eliminar
+		sem_post(sem_sleep);
 	}
-
-	printf("AAAAAAAAAH\n");
 
 }
 
@@ -121,6 +123,8 @@ int main(int argc, char * argv []) {
 		int tWrite = atoi(argv[2]);
 		int tSleep = atoi(argv[3]);
 		int memory = getMemorySize();
+
+		pthread_t writer;
 		
 		for(int i = 0; i < cantWriters; i ++){
 			Args * args = malloc(sizeof(Args));
@@ -129,11 +133,13 @@ int main(int argc, char * argv []) {
 			args->memory = memory;
 			args->PID = i;
 			
-			pthread_t writer;
+			
 			pthread_create(&writer, 0, writeLine,(void *)args);
 			
-			sleep(tSleep);
+			//sleep(tSleep);
 		}
+
+		pthread_join(writer, NULL);
 	}
 	
 	return 0;
